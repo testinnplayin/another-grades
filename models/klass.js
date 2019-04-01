@@ -8,7 +8,16 @@ const KlassSchema = new Schema({
         type : String,
         required : true
     },
-    category : String
+    category : String,
+    semesters_offered : {
+        type : String,
+        enum : [
+            'FALL',
+            'SPRING',
+            'SUMMER',
+            'N/A'
+        ]
+    }
 },
 {
     collection : 'classes'
