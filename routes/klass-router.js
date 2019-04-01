@@ -12,9 +12,11 @@ const KlassController = require('../controllers/klass');
 router.post('/', KlassController.create);
 
 router.use(function(err, req, res, next) {
-    console.error(`[ERROR] ${err.code} | ${req.method} at ${req.baseUrl}: ${err}`);
+    console.error(`[ERROR] ${req.errStatus || 500} | ${req.method} at ${req.baseUrl}: ${err}`);
+
     res.statusMessage = err.message;
-    return res.status(err.code);
+
+    return res.status(req.errStatus || 500).json({ message : err.message });
 });
 
 module.exports = router;
