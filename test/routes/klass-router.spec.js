@@ -24,11 +24,17 @@ describe('Klass Router', function() {
             .post('/api/class')
             .send(wellFormedKlass)
             .then(function (res) {
-                console.log('res ', res);
-                res.should.be.a('object');
-                res.should.have.property('title');
-                res.should.have.property('semesters_offered');
-                res.semesters_offered.should.have.lengthOf(2);
+                const resBody = res.body;
+
+                resBody.should.have.property('class');
+
+                const klass = resBody.class;
+
+                klass.should.be.a('object');
+                klass.should.have.property('title');
+                klass.should.have.property('semesters_offered');
+                klass.semesters_offered.should.have.lengthOf(2);
+                
                 done();
             })
             .catch(function(err) {
