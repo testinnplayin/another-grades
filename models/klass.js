@@ -16,7 +16,18 @@ const KlassSchema = new Schema({
             'SPRING',
             'SUMMER',
             'N/A'
-        ]
+        ],
+        default : 'N/A'
+    },
+    grading_system : {
+        type : String,
+        enum : [
+            'US - GPA x.y/4.0',
+            'US - letter (A, B, C, D, F)',
+            'FR - x/20',
+            'IB - x/7'
+        ],
+        default : 'US-letter(A, B, C, D, F)'
     }
 },
 {
