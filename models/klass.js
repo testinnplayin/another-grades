@@ -9,7 +9,7 @@ const KlassSchema = new Schema({
         required : true
     },
     category : String,
-    semesters_offered : {
+    semesters_offered : [{
         type : String,
         enum : [
             'FALL',
@@ -18,7 +18,7 @@ const KlassSchema = new Schema({
             'N/A'
         ],
         default : 'N/A'
-    },
+    }],
     grading_system : {
         type : String,
         enum : [
