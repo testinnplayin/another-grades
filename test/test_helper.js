@@ -18,18 +18,8 @@ before(function(done) {
         });
 });
 
-beforeEach(function(done) {
-   const { collections } = mongoose.connection.collections;
-
-   if (collections) {
-    collections
-        .drop()
-        .then(() => {
-            console.warn('Old collections dropped');
-            done();
-        })
+afterEach(function(done) {
+    mongoose.connection.dropDatabase()
+        .then(() => done())
         .catch(err => done(err));
-   } else {
-       done();
-   }
 });
