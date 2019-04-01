@@ -27,7 +27,7 @@ const KlassSchema = new Schema({
             'FR - x/20',
             'IB - x/7'
         ],
-        default : 'US-letter(A, B, C, D, F)'
+        default : 'US - letter (A, B, C, D, F)'
     }
 },
 {

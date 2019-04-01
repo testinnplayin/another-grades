@@ -10,6 +10,8 @@ const KlassController = require('../controllers/klass');
 // POST requests
 
 router.post('/', KlassController.create);
+router.get('/', KlassController.fetchAll);
+router.get('/:id', KlassController.fetchOne);
 
 router.use(function(err, req, res, next) {
     console.error(`[ERROR] ${req.errStatus || 500} | ${req.method} at ${req.baseUrl}: ${err}`);

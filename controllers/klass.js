@@ -23,5 +23,26 @@ module.exports = {
                 return res.status(201).json({ class : newKlass });
             })
             .catch(next);
+    },
+    fetchAll (req, res, next) {
+        Klass
+            .find()
+            .then(klasses => {
+                return res.status(200).json({ classes : klasses });
+            })
+            .catch(next);
+    },
+    fetchOne (req, res, next) {
+        Klass
+            .findOne({ _id : req.params.id })
+            .then(klass => {
+                if (!klass) {
+                    req.errStatus = 404;
+                    throw new Error('cannot find class requested');
+                }
+
+                return res.status(200).json({ class : klass });
+            })
+            .catch(next);
     }
 };

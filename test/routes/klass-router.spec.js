@@ -5,13 +5,30 @@ const should = chai.should();
 const chaiHTTP = require('chai-http');
 chai.use(chaiHTTP);
 
+// const mongoose = require('mongoose');
+const Klass = require('../../models/klass');
+
 const app = require('../../app');
 
 function postKlass (fakeReqBody) {
     return new Promise((resolve, reject) => {
         chai.request(app)
-            .post('/api/class')
+            .post('/api/classes')
             .send(fakeReqBody)
+            .then(function(res) {
+                resolve(res);
+            })
+            .catch(function(err) {
+                console.error(`Oops! ${err}`);
+                reject(err);
+            });
+    });
+}
+
+function getKlass(url) {
+    return new Promise((resolve, reject) => {
+        chai.request(app)
+            .get(url)
             .then(function(res) {
                 resolve(res);
             })
@@ -83,6 +100,102 @@ describe('Klass Router', function() {
             postKlass(anotherKlass)
                 .then(res => {
                     res.statusCode.should.eql(201);
+                    done();
+                })
+                .catch(err => done(err));
+        });
+    });
+
+    describe('GET requests', function() {
+        it('should GET all classes at /api/classes', function(done) {
+
+            const arrOfClasses = [
+                {
+                    title : 'Class 1'
+                },
+                {
+                    title : 'Class 2'
+                },
+                {
+                    title : 'Class 3'
+                },
+                {
+                    title : 'Class 4'
+                }
+            ];
+
+            Klass
+                .insertMany(arrOfClasses)
+                .then(() => {
+                    getKlass('/api/classes')
+                        .then(res => {
+                            const resBody = res.body;
+                            res.statusCode.should.eql(200);
+                            resBody.should.have.property('classes');
+                            resBody.classes.should.have.lengthOf(4);
+                            done();
+                        })
+                        .catch(err => done(err));
+                })
+                .catch(err => done(err));
+        });
+
+        it ('should GET a specific class at /api/classes/:id', function(done) {
+            const arrOfClasses = [
+                {
+                    title : 'Underwater Basket Weaving'
+                },
+                {
+                    title : 'Chemistry 101'
+                },
+                {
+                    title : 'Tongue Wagging 101'
+                }
+            ];
+
+            let klassId;
+
+            Klass
+                .insertMany(arrOfClasses)
+                .then(() => {
+                    return Klass.findOne()
+                })
+                .then(klass => {
+                    klassId = klass._id;
+                    console.log(klassId);
+                    return getKlass(`/api/classes/${klassId}`);
+                })
+                .then(res => {
+                    res.statusCode.should.eql(200);
+                    const resBody = res.body;
+                    const resBodyId = resBody.class._id;
+
+                    resBody.should.have.property('class');
+                    resBody.class.should.have.property('_id');
+                    resBodyId.toString().should.equal(klassId.toString());
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('should throw a 404 error if ObjectId is not valid', function(done) {
+            const newKlass = {
+                title : 'Underwater Basket Weaving'
+            };
+
+            let klassId;
+
+            Klass
+                .create(newKlass)
+                .then(klass => {
+                    klassId = klass._id;
+                    return Klass.deleteOne({ _id : klassId});
+                })
+                .then(() => {
+                    return getKlass(`/api/classes/${klassId}`);
+                })
+                .then(res => {
+                    res.statusCode.should.eql(404);
                     done();
                 })
                 .catch(err => done(err));

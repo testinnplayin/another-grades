@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 const klassRouter = require('./routes/klass-router');
 
 
-app.use('/api/class', klassRouter);
+app.use('/api/classes', klassRouter);
 
 
 // Catch-all route
