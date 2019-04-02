@@ -8,69 +8,70 @@
 
 const chai = require('chai');
 const should = chai.should();
-const chaiHTTP = require('chai-http');
-chai.use(chaiHTTP);
+
+const chaiRequests = require('../chai-requests');
 
 // const mongoose = require('mongoose');
 const Klass = require('../../models/klass');
 
-const app = require('../../app');
 
-function postKlass (fakeReqBody) {
-    return new Promise((resolve, reject) => {
-        chai.request(app)
-            .post('/api/classes')
-            .send(fakeReqBody)
-            .then(function(res) {
-                resolve(res);
-            })
-            .catch(function(err) {
-                console.error(`Oops! ${err}`);
-                reject(err);
-            });
-    });
-}
+const baseURL = '/api/classes';
 
-function getKlass(url) {
-    return new Promise((resolve, reject) => {
-        chai.request(app)
-            .get(url)
-            .then(function(res) {
-                resolve(res);
-            })
-            .catch(function(err) {
-                console.error(`Oops! ${err}`);
-                reject(err);
-            });
-    });
-}
+// function postResource(fakeReqBody) {
+//     return new Promise((resolve, reject) => {
+//         chai.request(app)
+//             .post('/api/classes')
+//             .send(fakeReqBody)
+//             .then(function(res) {
+//                 resolve(res);
+//             })
+//             .catch(function(err) {
+//                 console.error(`Oops! ${err}`);
+//                 reject(err);
+//             });
+//     });
+// }
 
-function putKlass(url, fakeReqBody) {
-    return new Promise((resolve, reject) => {
-        chai.request(app)
-            .put(url)
-            .send(fakeReqBody)
-            .then(function(res) {
-                resolve(res);
-            })
-            .catch(function(err) {
-                reject(err);
-            });
-    });
-}
+// function getResource(url) {
+//     return new Promise((resolve, reject) => {
+//         chai.request(app)
+//             .get(url)
+//             .then(function(res) {
+//                 resolve(res);
+//             })
+//             .catch(function(err) {
+//                 console.error(`Oops! ${err}`);
+//                 reject(err);
+//             });
+//     });
+// }
 
-function deleteKlass(url) {
-    return new Promise((resolve, reject) => {
-        chai.request(app)
-            .delete(url)
-            .then(function(res) {
-                resolve(res);
-            })
-            .catch(function(err) {
-                reject(err);
-            });
-    });
-}
+// function putResource(url, fakeReqBody) {
+//     return new Promise((resolve, reject) => {
+//         chai.request(app)
+//             .put(url)
+//             .send(fakeReqBody)
+//             .then(function(res) {
+//                 resolve(res);
+//             })
+//             .catch(function(err) {
+//                 reject(err);
+//             });
+//     });
+// }
+
+// function deleteResource(url) {
+//     return new Promise((resolve, reject) => {
+//         chai.request(app)
+//             .delete(url)
+//             .then(function(res) {
+//                 resolve(res);
+//             })
+//             .catch(function(err) {
+//                 reject(err);
+//             });
+//     });
+// }
 
 describe('Klass Router', function() {
     describe('POST requests', function() {
@@ -83,7 +84,7 @@ describe('Klass Router', function() {
             };
     
     
-            postKlass(wellFormedKlass)
+            chaiRequests.postResource(baseURL, wellFormedKlass)
                 .then(res => {
                     const resBody = res.body;
     
@@ -109,7 +110,7 @@ describe('Klass Router', function() {
                 grading_system : 'FR - x/20'
             };
     
-            postKlass(badlyFormedKlass)
+            chaiRequests.postResource(baseURL, badlyFormedKlass)
                 .then(res => {
                     const resBody = res.body;
     
@@ -130,7 +131,7 @@ describe('Klass Router', function() {
                 grading_system : 'US - letter (A, B, C, D, F)'
             };
 
-            postKlass(anotherKlass)
+            chaiRequests.postResource(baseURL, anotherKlass)
                 .then(res => {
                     res.statusCode.should.eql(201);
                     done();
@@ -160,17 +161,16 @@ describe('Klass Router', function() {
             Klass
                 .insertMany(arrOfClasses)
                 .then(() => {
-                    getKlass('/api/classes')
-                        .then(res => {
-                            const resBody = res.body;
+                   return chaiRequests.getResource(baseURL);
+                })
+                .then(res => {
+                    const resBody = res.body;
 
-                            res.statusCode.should.eql(200);
-                            resBody.should.have.property('classes');
-                            resBody.classes.should.have.lengthOf(4);
+                    res.statusCode.should.eql(200);
+                    resBody.should.have.property('classes');
+                    resBody.classes.should.have.lengthOf(4);
 
-                            done();
-                        })
-                        .catch(err => done(err));
+                    done();
                 })
                 .catch(err => done(err));
         });
@@ -198,7 +198,7 @@ describe('Klass Router', function() {
                 .then(klass => {
                     klassId = klass._id;
 
-                    return getKlass(`/api/classes/${klassId}`);
+                    return chaiRequests.getResource(`${baseURL}/${klassId}`);
                 })
                 .then(res => {
                     res.statusCode.should.eql(200);
@@ -229,7 +229,7 @@ describe('Klass Router', function() {
                     return Klass.deleteOne({ _id : klassId});
                 })
                 .then(() => {
-                    return getKlass(`/api/classes/${klassId}`);
+                    return chaiRequests.getResource(`${baseURL}/${klassId}`);
                 })
                 .then(res => {
                     res.statusCode.should.eql(404);
@@ -258,7 +258,7 @@ describe('Klass Router', function() {
                         _id : klassId
                     };
 
-                    return putKlass(`/api/classes/${klassId}`, updatedKlass);
+                    return chaiRequests.putResource(`${baseURL}/${klassId}`, updatedKlass);
                 })
                 .then(res => {
                     res.statusCode.should.eql = 200;
@@ -295,7 +295,7 @@ describe('Klass Router', function() {
                         title : 'Chemistry 102',
                         _id : klassId
                     };
-                    return putKlass(`/api/classes/${klassId}`, updatedKlass);
+                    return chaiRequests.putResource(`${baseURL}/${klassId}`, updatedKlass);
                 })
                 .then(res => {
                     res.statusCode.should.eql(404);
@@ -322,7 +322,7 @@ describe('Klass Router', function() {
                         title : ''
                     };
 
-                    return putKlass(`/api/classes/${klassId}`, updatedKlass);
+                    return chaiRequests.putResource(`${baseURL}/${klassId}`, updatedKlass);
                 })
                 .then(res => {
                     res.statusCode.should.eql(400);
@@ -345,7 +345,7 @@ describe('Klass Router', function() {
                 .then(klass => {
                     klassId = klass._id;
 
-                    return deleteKlass(`/api/classes/${klassId}`);
+                    return chaiRequests.deleteResource(`${baseURL}/${klassId}`);
                 })
                 .then(res => {
                     res.statusCode.should.eql(204);
