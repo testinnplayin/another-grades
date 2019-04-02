@@ -39,6 +39,20 @@ function getKlass(url) {
     });
 }
 
+function putKlass(url, fakeReqBody) {
+    return new Promise((resolve, reject) => {
+        chai.request(app)
+            .put(url)
+            .send(fakeReqBody)
+            .then(function(res) {
+                resolve(res);
+            })
+            .catch(function(err) {
+                reject(err);
+            });
+    });
+}
+
 describe('Klass Router', function() {
     describe('POST requests', function() {
         it ('should save a well-formed Klass to database with a POST', function(done) {
@@ -196,6 +210,98 @@ describe('Klass Router', function() {
                 })
                 .then(res => {
                     res.statusCode.should.eql(404);
+                    done();
+                })
+                .catch(err => done(err));
+        });
+    });
+    
+    describe('PUT requests', function() {
+        it('should update a class at /api/classes/:id when well-formed', function(done) {
+            const newKlass = {
+                title : 'Underwater Basket Reaving',
+                category : 'Arts and Farts'
+            };
+
+            let klassId;
+
+            Klass
+                .create(newKlass)
+                .then(klass => {
+                    klassId = klass._id;
+
+                    console.log('klassId ', klassId);
+
+                    const updatedKlass = {
+                        title : 'Underwater Basket Weaving',
+                        _id : klassId
+                    };
+
+                    return putKlass(`/api/classes/${klassId}`, updatedKlass);
+                })
+                .then(res => {
+                    res.statusCode.should.eql = 200;
+
+                    const resBody = res.body;
+                    resBody.should.have.property('class');
+
+                    const rKlass = resBody.class;
+                    rKlass.should.have.property('title');
+                    rKlass.title.should.eql('Underwater Basket Weaving');
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('PUT request should return a 404 if cannot find class', function(done) {
+            const newKlass = {
+                title : 'Chemistry 101'
+            };
+
+            let klassId;
+
+            Klass
+                .create(newKlass)
+                .then(klass => {
+                    klassId = klass._id;
+                    return Klass.deleteOne({ _id : klass });
+                })
+                .then(() => {
+                    const updatedKlass = {
+                        title : 'Chemistry 102',
+                        _id : klassId
+                    };
+                    return putKlass(`/api/classes/${klassId}`, updatedKlass);
+                })
+                .then(res => {
+                    res.statusCode.should.eql(404);
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('PUT request should return a 400 if request badly-formed', function(done) {
+            const newKlass = {
+                title : 'Chemistry 101'
+            };
+
+            let klassId;
+
+            Klass
+                .create(newKlass)
+                .then(klass => {
+                    klassId = klass._id;
+
+                    const updatedKlass = {
+                        _id : klass._id,
+                        semesters_offered : ['SPRING', 'FALL'],
+                        title : ''
+                    };
+
+                    return putKlass(`/api/classes/${klassId}`, updatedKlass);
+                })
+                .then(res => {
+                    res.statusCode.should.eql(400);
                     done();
                 })
                 .catch(err => done(err));
