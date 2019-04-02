@@ -17,8 +17,29 @@ const { genericErrorHandler } = require('../handlers/error-handlers');
 
 // REQUESTS
 
+// GET Requests
+
+/**
+ * gets class history documents at /api/class-histories
+ * @method get
+ * @callback klassHistoryController.fetchAll
+ * @param {string} - partial url of route call
+ * @see module:controllers/klass-history.fetchAll
+ */
+
+router.get('/', klassHistoryController.fetchAll);
+
+router.get('/:id', klassHistoryController.fetchOne);
+
 // POST Requesets
 
+/**
+ * posts a new class history document at /api/class-histories
+ * @method post 
+ * @callback klassHistoryController.create
+ * @param {string} - partial url of route call
+ * @see module:controllers/klass-history.create
+ */
 router.post('/', klassHistoryController.create);
 
 // MIDDLEWARE

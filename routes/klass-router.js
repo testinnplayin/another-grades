@@ -37,6 +37,7 @@ router.delete('/:id', KlassController.remove);
 // GET requests
 
 /** Get route at /api/classes
+ * @method get
  * @callback KlassController.fetchAll
  * @param {string} - partial url of route call
  * @see module:controllers/klass.fetchAll
@@ -44,6 +45,7 @@ router.delete('/:id', KlassController.remove);
 router.get('/', KlassController.fetchAll);
 
 /** Get route at /api/classes/:id
+ * @method get
  * @callback KlassController.fetchOne
  * @param {string} - partial url of route call
  * @see module:controllers/klass.fetchOne
@@ -53,6 +55,7 @@ router.get('/:id', KlassController.fetchOne);
 // POST requests
 
 /** Post route at /api/classes
+ * @method post
  * @callback KlassController.create
  * @param {string} - partial url of route call
  * @see module:controllers/klass.create
@@ -63,6 +66,7 @@ router.post('/', KlassController.create);
 // PUT requests
 
 /** PUT route at /api/classes/:id
+ * @method put
  * @callback KlassController.update
  * @param {string} - partial url of route call
  * @see module:controllers/klass.update

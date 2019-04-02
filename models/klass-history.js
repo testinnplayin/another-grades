@@ -61,7 +61,7 @@ const klassHistorySchema = new Schema(
  */
 klassHistorySchema.methods.showKlass = function(klass) {
     return {
-        class_id : this.class_id,
+        class_id : klass._id,
         year : this.year,
         semester : this.semester,
         students : this.students,

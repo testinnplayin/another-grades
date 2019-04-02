@@ -118,4 +118,42 @@ describe('KlassHistory router', function() {
                 .catch(err => done(err));
         });
     });
+
+    describe('GET requests', function() {
+        let kHId;
+        beforeEach(function(done) {
+            const newKlassHistory = {
+                class_id : klassId,
+                semester : 'FALL',
+                year : 2019,
+                students : []
+            };
+
+    
+            KlassHistory
+                .create(newKlassHistory)
+                .then(nKH => {
+                    kHId = nKH._id;
+                    done();
+                })
+                .catch(() => done(err));
+        });
+
+        it('GET a specific class history should return a class history object with class info', function(done) {
+            chaiRequests
+                .getResource(`${baseURL}/${kHId}`)
+                .then(res => {
+                    res.statusCode.should.eql(200);
+                    
+                    const resBody = res.body;
+                    resBody.should.have.property('class_history');
+                    
+                    const classHistory = resBody.class_history;
+                    classHistory.should.have.property('class');
+                    classHistory.class.should.be.a('object');
+                    done();
+                })
+                .catch(err => done(err));
+        });
+    });
 });

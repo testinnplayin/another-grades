@@ -117,5 +117,43 @@ module.exports = {
                 return res.status(201).json({ class_history : newKH.showKlass(kTemplate) });
             })
             .catch(next);
+    },
+    /**
+     * fetches all class history documents
+     * @callback next
+     * @param {Object} req - request object
+     * @param {Object} res - response object
+     * @returns either an error or a JSON object containing an array of class history documents
+     */
+    fetchAll(req, res, next) {
+        KlassHistory
+            .find()
+            .populate('class_id')
+            .then(kHs => {
+                return res.status(200).json({ class_histories : kHs.map(kH => kH.showKlass(kH.class_id)) });
+            })
+            .catch(next);
+    },
+    /**
+     * fetches a specific class history document
+     * @callback next
+     * @param {Object} req - request object
+     * @param {Object} res - response object 
+     * @returns either an error or a JSON object containing the class history document
+     */
+    fetchOne(req, res, next) {
+        KlassHistory
+            .findOne({ _id : req.params.id })
+            .populate('class_id')
+            .then(kH => {
+                if (!kH) {
+                    req.errStatus = 404;
+                    /** @throws this 404 is returned when the document no longer exists in the collection */
+                    throw new Error('cannot find classHistory ', req.params.id);
+                }
+
+                return res.status(200).json({ class_history : kH.showKlass(kH.class_id) });
+            })
+            .catch(next);
     }
 };
