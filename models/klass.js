@@ -21,11 +21,9 @@ const Schema = mongoose.Schema;
 /**
  * Create a new class schema in Mongoose
  * @class
- * @lends KlassSchema.prototype
  */
-
 const KlassSchema = new Schema(
-    /** @constructs KlassSchema */
+    /** @lends KlassSchema.prototype */
     {
     /** @member {string} title - title of the class */
     title : {

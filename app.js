@@ -22,7 +22,7 @@ const klassRouter = require('./routes/klass-router');
 const klassHistoryRouter = require('./routes/klass-history-router');
 
 app.use('/api/classes', klassRouter);
-app.use('/api/class_histories', klassHistoryRouter);
+app.use('/api/class-histories', klassHistoryRouter);
 
 // Catch-all route
 

@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const klassHistorySchema = new Schema({
-    klass_id : {
+    class_id : {
         type : Schema.Types.ObjectId,
         ref : 'Klass',
         required : true,
