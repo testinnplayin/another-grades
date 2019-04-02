@@ -230,8 +230,6 @@ describe('Klass Router', function() {
                 .then(klass => {
                     klassId = klass._id;
 
-                    console.log('klassId ', klassId);
-
                     const updatedKlass = {
                         title : 'Underwater Basket Weaving',
                         _id : klassId
