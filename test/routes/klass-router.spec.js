@@ -1,3 +1,9 @@
+/** 
+ * Integrated tests for the KlassRouter
+ * Author: R.Wood
+ * Date: 02/04/2019
+*/
+
 'use strict';
 
 const chai = require('chai');
@@ -44,6 +50,19 @@ function putKlass(url, fakeReqBody) {
         chai.request(app)
             .put(url)
             .send(fakeReqBody)
+            .then(function(res) {
+                resolve(res);
+            })
+            .catch(function(err) {
+                reject(err);
+            });
+    });
+}
+
+function deleteKlass(url) {
+    return new Promise((resolve, reject) => {
+        chai.request(app)
+            .delete(url)
             .then(function(res) {
                 resolve(res);
             })
@@ -144,9 +163,11 @@ describe('Klass Router', function() {
                     getKlass('/api/classes')
                         .then(res => {
                             const resBody = res.body;
+
                             res.statusCode.should.eql(200);
                             resBody.should.have.property('classes');
                             resBody.classes.should.have.lengthOf(4);
+
                             done();
                         })
                         .catch(err => done(err));
@@ -176,17 +197,19 @@ describe('Klass Router', function() {
                 })
                 .then(klass => {
                     klassId = klass._id;
-                    console.log(klassId);
+
                     return getKlass(`/api/classes/${klassId}`);
                 })
                 .then(res => {
                     res.statusCode.should.eql(200);
+
                     const resBody = res.body;
                     const resBodyId = resBody.class._id;
 
                     resBody.should.have.property('class');
                     resBody.class.should.have.property('_id');
                     resBodyId.toString().should.equal(klassId.toString());
+
                     done();
                 })
                 .catch(err => done(err));
@@ -241,11 +264,14 @@ describe('Klass Router', function() {
                     res.statusCode.should.eql = 200;
 
                     const resBody = res.body;
+
                     resBody.should.have.property('class');
 
                     const rKlass = resBody.class;
+
                     rKlass.should.have.property('title');
                     rKlass.title.should.eql('Underwater Basket Weaving');
+
                     done();
                 })
                 .catch(err => done(err));
@@ -300,6 +326,29 @@ describe('Klass Router', function() {
                 })
                 .then(res => {
                     res.statusCode.should.eql(400);
+                    done();
+                })
+                .catch(err => done(err));
+        });
+    });
+
+    describe('DELETE requests', function() {
+        it('should perform a soft delete at /api/classes/:id', function(done) {
+            const newKlass = {
+                title : 'Something'
+            };
+
+            let klassId;
+
+            Klass
+                .create(newKlass)
+                .then(klass => {
+                    klassId = klass._id;
+
+                    return deleteKlass(`/api/classes/${klassId}`);
+                })
+                .then(res => {
+                    res.statusCode.should.eql(204);
                     done();
                 })
                 .catch(err => done(err));
