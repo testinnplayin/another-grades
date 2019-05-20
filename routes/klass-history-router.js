@@ -29,9 +29,17 @@ const { genericErrorHandler } = require('../handlers/error-handlers');
 
 router.get('/', klassHistoryController.fetchAll);
 
+/**
+ * gets a specific class history document at /api/class-history/:id
+ * @method get
+ * @callback klassHistoryController.fetchOne
+ * @param {string} - partial url of route call
+ * @see module:controllers/klass-history.fetchOne
+ */
+
 router.get('/:id', klassHistoryController.fetchOne);
 
-// POST Requesets
+// POST Requests
 
 /**
  * posts a new class history document at /api/class-histories

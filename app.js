@@ -16,9 +16,12 @@ app.use(bodyParser.json());
 
 /** 
  * @see module:routes/klass-router */
+
 const klassRouter = require('./routes/klass-router');
+
 /**
  * @see module:routes/klass-history-router */
+ 
 const klassHistoryRouter = require('./routes/klass-history-router');
 
 app.use('/api/classes', klassRouter);
