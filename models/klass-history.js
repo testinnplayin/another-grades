@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 /**
- * Create a new class history schema in Mongoose; this model is much like an instance of a class
+ * Create a new class history schema in Mongoose; this model is much like an instance of a class for a given semester/year
  * @class
  */
 const klassHistorySchema = new Schema(

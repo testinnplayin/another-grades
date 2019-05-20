@@ -128,7 +128,6 @@ describe('KlassHistory router', function() {
                 year : 2019,
                 students : []
             };
-
     
             KlassHistory
                 .create(newKlassHistory)
@@ -136,7 +135,7 @@ describe('KlassHistory router', function() {
                     kHId = nKH._id;
                     done();
                 })
-                .catch(() => done(err));
+                .catch(err => done(err));
         });
 
         it('GET a specific class history should return a class history object with class info', function(done) {
@@ -151,6 +150,50 @@ describe('KlassHistory router', function() {
                     const classHistory = resBody.class_history;
                     classHistory.should.have.property('class');
                     classHistory.class.should.be.a('object');
+                    done();
+                })
+                .catch(err => done(err));
+        });
+    });
+
+    describe('PUT requests', function () {
+        let kHId;
+
+        beforeEach(function(done) {
+            const newKlassHistory = {
+                class_id : klassId,
+                semester : 'FALL',
+                year : 2019,
+                students : []
+            };
+
+            KlassHistory
+                .create(newKlassHistory)
+                .then(nKH => {
+                    kHId = nKH._id;
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('PUT a specific class history should update a class history object', function (done) {
+            const uKH = {
+                year : 2018
+            };
+
+            chaiRequests
+                .putResource(`${baseURL}/${kHId}`, uKH)
+                .then(res => {
+                    res.statusCode.should.eql(200);
+                    
+                    const resBody = res.body;
+
+                    resBody.should.have.property('class_history');
+                    
+                    const rKH = resBody.class_history;
+                    rKH.should.have.property('year');
+                    rKH.year.should.eql(2018);
+
                     done();
                 })
                 .catch(err => done(err));

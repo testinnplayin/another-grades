@@ -84,7 +84,7 @@ module.exports = {
                  * @constant {boolean} yearOk - this is true when the year is a valid year
                  */
                 const yearOk = klassVerifiers.checkYear(req.body.year);
-                
+
                 kTemplate = klass;
 
                 if (!yearOk) {
@@ -137,6 +137,32 @@ module.exports = {
                 }
 
                 return res.status(200).json({ class_history : kH.showKlass(kH.class_id) });
+            })
+            .catch(next);
+    },
+    /**
+     * updates everything BUT the student array
+     * @param {Object} req - request object
+     * @param {Object} res - response object
+     * @returns either an error or a JSON object containing the updated class history document
+     */
+    update(req, res, next) {
+        let uKH = req.body;
+
+        if (uKH.hasOwnProperty('students')) {
+            req.errStatus = 400;
+            throw new Error('badly-formed request');
+        }
+
+        KlassHistory
+            .findOneAndUpdate({ _id : req.params.id }, { $set : uKH }, { new : true })
+            .then(updatedKH => {
+                if (!updatedKH) {
+                    req.errStatus = 404;
+                    throw new Error('cannot find classHistory ', req.params.id);
+                }
+
+                return res.status(200).json({ class_history : updatedKH.showKlass(updatedKH.class_id) })
             })
             .catch(next);
     }

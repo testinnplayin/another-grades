@@ -11,67 +11,9 @@ const should = chai.should();
 
 const chaiRequests = require('../chai-requests');
 
-// const mongoose = require('mongoose');
 const Klass = require('../../models/klass');
 
-
 const baseURL = '/api/classes';
-
-// function postResource(fakeReqBody) {
-//     return new Promise((resolve, reject) => {
-//         chai.request(app)
-//             .post('/api/classes')
-//             .send(fakeReqBody)
-//             .then(function(res) {
-//                 resolve(res);
-//             })
-//             .catch(function(err) {
-//                 console.error(`Oops! ${err}`);
-//                 reject(err);
-//             });
-//     });
-// }
-
-// function getResource(url) {
-//     return new Promise((resolve, reject) => {
-//         chai.request(app)
-//             .get(url)
-//             .then(function(res) {
-//                 resolve(res);
-//             })
-//             .catch(function(err) {
-//                 console.error(`Oops! ${err}`);
-//                 reject(err);
-//             });
-//     });
-// }
-
-// function putResource(url, fakeReqBody) {
-//     return new Promise((resolve, reject) => {
-//         chai.request(app)
-//             .put(url)
-//             .send(fakeReqBody)
-//             .then(function(res) {
-//                 resolve(res);
-//             })
-//             .catch(function(err) {
-//                 reject(err);
-//             });
-//     });
-// }
-
-// function deleteResource(url) {
-//     return new Promise((resolve, reject) => {
-//         chai.request(app)
-//             .delete(url)
-//             .then(function(res) {
-//                 resolve(res);
-//             })
-//             .catch(function(err) {
-//                 reject(err);
-//             });
-//     });
-// }
 
 describe('Klass Router', function() {
     describe('POST requests', function() {

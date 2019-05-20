@@ -1,3 +1,10 @@
+/**
+ * @module verification/klass
+ * Module that contains the verification functions (in order to return custom 400 errors)
+ * @author R.Wood
+ * Date: 20/05/2019
+ */
+
 'use strict';
 
 /**
@@ -19,6 +26,10 @@ function checkYear(rBodyYear) {
     return (rBodyYear < 1900 || rBodyYear > 2050) ? false : (typeof rBodyYear !== 'number') ? false : true;
 }
 
+/** 
+ * Exports checkSemester and checkYear
+ * @type {Object}
+*/
 module.exports = {
     checkSemester,
     checkYear

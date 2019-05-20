@@ -50,6 +50,18 @@ router.get('/:id', klassHistoryController.fetchOne);
  */
 router.post('/', klassHistoryController.create);
 
+// PUT Requests
+
+/**
+ * updates an extant class history document at /api/class-histories/:id
+ * @method put
+ * @callback klassHistoryController.update
+ * @param {string} - partial url of route call
+ * @see module:controllers/klass-history.update
+ */
+
+router.put('/:id', klassHistoryController.update);
+
 // MIDDLEWARE
 
 /**
