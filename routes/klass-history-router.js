@@ -53,7 +53,7 @@ router.post('/', klassHistoryController.create);
 // PUT Requests
 
 /**
- * updates an extant class history document at /api/class-histories/:id
+ * updates an extant class history document at /api/class-histories/:id (does not include student array updates)
  * @method put
  * @callback klassHistoryController.update
  * @param {string} - partial url of route call

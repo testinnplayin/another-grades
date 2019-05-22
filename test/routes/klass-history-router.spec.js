@@ -178,7 +178,8 @@ describe('KlassHistory router', function() {
 
         it('PUT a specific class history should update a class history object', function (done) {
             const uKH = {
-                year : 2018
+                year : 2018,
+                class_id : klassId
             };
 
             chaiRequests
@@ -194,6 +195,34 @@ describe('KlassHistory router', function() {
                     rKH.should.have.property('year');
                     rKH.year.should.eql(2018);
 
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('PUT a specific class history should throw a 400 if class id is missing', function (done) {
+            const uKH = {
+                year : 2018
+            };
+
+            chaiRequests
+                .putResource(`${baseURL}/${kHId}`, uKH)
+                .then(res => {
+                    res.statusCode.should.eql(400);
+
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('PUT a specific class history should throw a 400 if the request contains the students field', function (done) {
+            const uKH = {
+                students : [{ _id : '1'}]
+            };
+
+            chaiRequests.putResource(`${baseURL}/${kHId}`, uKH)
+                .then(res => {
+                    res.statusCode.should.eql(400);
                     done();
                 })
                 .catch(err => done(err));

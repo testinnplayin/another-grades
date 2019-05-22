@@ -14,5 +14,8 @@ module.exports = {
      */
     getBadlyFormedReq () {
         return 'Badly-formed request';
+    },
+    getCannotFind() {
+        return 'Resource not found';
     }
 };
