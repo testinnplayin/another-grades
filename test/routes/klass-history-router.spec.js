@@ -138,7 +138,7 @@ describe('KlassHistory router', function() {
                 .catch(err => done(err));
         });
 
-        it('GET a specific class history should return a class history object with class info', function(done) {
+        it('GET a specific class history should return a class history document with class info', function(done) {
             chaiRequests
                 .getResource(`${baseURL}/${kHId}`)
                 .then(res => {
@@ -150,6 +150,35 @@ describe('KlassHistory router', function() {
                     const classHistory = resBody.class_history;
                     classHistory.should.have.property('class');
                     classHistory.class.should.be.a('object');
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('GET all class history documents should return an array of class history documents', function (done) {
+            const anotherKH = {
+                class_id : klassId,
+                semester : 'SPRING',
+                year : 2018,
+                students : []
+            };
+
+            KlassHistory
+                .create(anotherKH)
+                .then(() => {
+                    return chaiRequests.getResource(`${baseURL}/`);
+                })
+                .then(res => {
+                    res.statusCode.should.eql(200);
+
+                    const resBody = res.body;
+                    resBody.should.have.property('class_histories');
+
+                    const classHistories = resBody.class_histories;
+
+                    classHistories.should.be.a('array');
+                    classHistories.should.have.lengthOf(2);
+
                     done();
                 })
                 .catch(err => done(err));
@@ -242,5 +271,21 @@ describe('KlassHistory router', function() {
         });
     });
 
-    
+    // describe('DELETE requests', function() {
+    //     beforeEach(function(done) {
+    //         const newKlassHistory = {
+    //             class_id : klassId,
+    //             semester : 'FALL',
+    //             year : 2019,
+    //             students : []
+    //         };
+
+    //         KlassHistory
+    //             .create(newKlassHistory)
+    //             .then(nKH => {
+
+    //             })
+    //             .catch(err => done(err));
+    //     });
+    // });
 });
