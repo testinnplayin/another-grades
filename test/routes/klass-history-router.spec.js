@@ -230,12 +230,12 @@ describe('KlassHistory router', function() {
         });
 
         it('PUT a specific class history should throw a 400 if class id is missing', function (done) {
-            const uKH = {
+            const badlyFormedKH = {
                 year : 2018
             };
 
             chaiRequests
-                .putResource(`${baseURL}/${kHId}`, uKH)
+                .putResource(`${baseURL}/${kHId}`, badlyFormedKH)
                 .then(res => {
                     res.statusCode.should.eql(400);
 
@@ -245,11 +245,11 @@ describe('KlassHistory router', function() {
         });
 
         it('PUT a specific class history should throw a 400 if the request contains the students field', function (done) {
-            const uKH = {
+            const badlyFormedKH = {
                 students : [{ _id : '1'}]
             };
 
-            chaiRequests.putResource(`${baseURL}/${kHId}`, uKH)
+            chaiRequests.putResource(`${baseURL}/${kHId}`, badlyFormedKH)
                 .then(res => {
                     res.statusCode.should.eql(400);
                     done();
@@ -271,21 +271,35 @@ describe('KlassHistory router', function() {
         });
     });
 
-    // describe('DELETE requests', function() {
-    //     beforeEach(function(done) {
-    //         const newKlassHistory = {
-    //             class_id : klassId,
-    //             semester : 'FALL',
-    //             year : 2019,
-    //             students : []
-    //         };
+    describe('DELETE requests', function() {
+        let kHId;
 
-    //         KlassHistory
-    //             .create(newKlassHistory)
-    //             .then(nKH => {
+        beforeEach(function(done) {
+            const newKlassHistory = {
+                class_id : klassId,
+                semester : 'FALL',
+                year : 2019,
+                students : []
+            };
 
-    //             })
-    //             .catch(err => done(err));
-    //     });
-    // });
+            KlassHistory
+                .create(newKlassHistory)
+                .then(nKH => {
+                    kHId = nKH._id;
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('DELETE a specific class history should soft delete the class history document from collection', function (done) {
+            chaiRequests
+                .deleteResource(`${baseURL}/${kHId}`)
+                .then(res => {
+                    res.statusCode.should.eql(204);
+
+                    done();
+                })
+                .catch(err => done(err));
+        });
+    });
 });

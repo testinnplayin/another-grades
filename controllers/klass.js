@@ -26,7 +26,7 @@ module.exports = {
      * @callback next 
      * @param  {Object} req - contains request object; must contain the field title in it
      * @param  {Object} res - contains response object
-     * @return {Object} A response with either an error or JSON object with new class document
+     * @returns {Object} A response with either an error or JSON object with new class document
      */
     create (req, res, next) {
         const reqBody = req.body;
@@ -62,7 +62,7 @@ module.exports = {
      * @callback next 
      * @param  {Object} req - contains request object
      * @param  {Object} res - contains response object
-     * @return {Object} A response with either an error or JSON object with classes
+     * @returns {Object} A response with either an error or JSON object with classes
      */
     fetchAll (req, res, next) {
         Klass
@@ -77,7 +77,7 @@ module.exports = {
      * @callback next 
      * @param  {Object} req - contains request object
      * @param  {Object} res - contains response object
-     * @return {Object} A response with either an error or JSON object with the class document
+     * @returns {Object} A response with either an error or JSON object with the class document
      */
     fetchOne (req, res, next) {
         Klass
@@ -98,7 +98,7 @@ module.exports = {
      * @callback next
      * @param  {Object} req - contains request object
      * @param  {Object} res - contains response object
-     * @return {Object} A response with either an error or a 204 response
+     * @returns {Object} A response with either an error or a 204 response
      */
     remove (req, res, next) {
         Klass
@@ -119,7 +119,7 @@ module.exports = {
      * @callback next 
      * @param  {Object} req - contains request object
      * @param  {Object} res - contains response object
-     * @return {Object} A response with either an error or JSON object with updated class document
+     * @returns {Object} A response with either an error or JSON object with updated class document
      */
     update (req, res, next) {
         /**

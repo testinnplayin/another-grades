@@ -180,6 +180,27 @@ module.exports = {
         resolveReqWSemester(req, res, next);
     },
     /**
+     * Delete - performs soft delete on a class history document in the database
+     * @param {Object} req - contains request object
+     * @param {Object} res - contains response object
+     * @callback next
+     * @returns {Object} A response with either an error or a 204
+     */
+    delete(req, res, next) {
+        KlassHistory
+            .delete({ _id : req.params.id })
+            .then(result => {
+                if (result.nModified !== 1) {
+                    /** @throws a 404 if nothing is found and modified */
+                    req.errStatus = 404;
+                    throw new Error(errMsgs.noKH);
+                }
+
+                return res.status(204).end();
+            })
+            .catch(next);
+    },
+    /**
      * fetches all class history documents
      * @callback next
      * @param {Object} req - request object

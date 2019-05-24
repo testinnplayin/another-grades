@@ -57,16 +57,28 @@ router.post('/', klassHistoryController.create);
  * @method put
  * @callback klassHistoryController.update
  * @param {string} - partial url of route call
- * @see module:controllers/klass-history.update
+ * @see module:controllers.klass-history.update
  */
 
 router.put('/:id', klassHistoryController.update);
+
+// DELETE Requests
+
+/**
+ * soft deletes an extant class history document at /api/class-histories/:id
+ * @method delete
+ * @callback klassHistoryController.delete
+ * @param {string}
+ * @see module:controllers.klass-history.delete
+ */
+
+router.delete('/:id', klassHistoryController.delete);
 
 // MIDDLEWARE
 
 /**
  * Middleware containing generic error handler
- * @see module:handlers/error-handlers.genericErrorHandler
+ * @see module:handlers.error-handlers.genericErrorHandler
  */
 
  router.use(genericErrorHandler);

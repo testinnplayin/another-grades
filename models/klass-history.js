@@ -7,8 +7,15 @@
 
 'use strict';
 
+// IMPORTS
+
+// VENDOR
+
 const mongoose = require('mongoose');
+const mongoose_delete = require('mongoose-delete');
+
 const Schema = mongoose.Schema;
+
 
 /**
  * Create a new class history schema in Mongoose; this model is much like an instance of a class for a given semester/year
@@ -72,6 +79,8 @@ klassHistorySchema.methods.showKlass = function(klass) {
         }
     };
 };
+
+klassHistorySchema.plugin(mongoose_delete, { overrideMethods : 'all' });
 
 const KlassHistory = mongoose.model('KlassHistory', klassHistorySchema);
 
