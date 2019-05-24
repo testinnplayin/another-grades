@@ -61,5 +61,18 @@ module.exports = {
                     reject(err);
                 });
         });
+    },
+
+    simplePutResource(url) {
+        return new Promise((resolve, reject) => {
+            chai.request(app)
+                .put(url)
+                .then(function(res) {
+                    resolve(res);
+                })
+                .catch(function(err) {
+                    reject(err);
+                });
+        });
     }
 }

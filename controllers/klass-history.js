@@ -241,6 +241,31 @@ module.exports = {
             .catch(next);
     },
     /**
+     * restoreOne - restores a single klassHistory document
+     * @param {req} req - request object
+     * @param {res} res - response object
+     * @callback next
+     * @returns either an error or a JSON object containing the classhistory document
+     */
+    restoreOne(req, res, next) {
+        KlassHistory
+            .restore({ _id : req.params.id })
+            .then(result => {
+                if (result.n !== 1) {
+                    /** @throws a 404 if document is not found */
+                    req.errStatus = 404;
+                    throw new Error(errMsgs.noKH);
+                }
+
+                return KlassHistory.findOne({ _id : req.params.id }).populate('class_id');
+            })
+            .then(restoredKH => {
+                /** @see module.models.klassHistory.method.showKlass */
+                return res.status(200).json({ class_history : restoredKH.showKlass(restoredKH.class_id) });
+            })
+            .catch(next)
+    },
+    /**
      * updates everything BUT the student array
      * @callback next
      * @param {Object} req - request object

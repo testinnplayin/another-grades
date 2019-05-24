@@ -62,7 +62,17 @@ router.post('/', klassHistoryController.create);
 
 router.put('/:id', klassHistoryController.update);
 
-// DELETE Requests
+/**
+ * restores a soft-deleted class history document at /api/class-histories/restore/:id
+ * @method put
+ * @callback klassHistoryController.restoreOne
+ * @param {string} - partial url of route call
+ * @see module:controllers.klass-history.restoreOne
+ */
+
+router.put('/restore/:id', klassHistoryController.restoreOne);
+
+// 'DELETE' Requests
 
 /**
  * soft deletes an extant class history document at /api/class-histories/:id

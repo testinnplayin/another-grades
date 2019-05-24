@@ -271,7 +271,7 @@ describe('KlassHistory router', function() {
         });
     });
 
-    describe('DELETE requests', function() {
+    describe('DELETE and related requests', function() {
         let kHId;
 
         beforeEach(function(done) {
@@ -297,6 +297,23 @@ describe('KlassHistory router', function() {
                 .then(res => {
                     res.statusCode.should.eql(204);
 
+                    done();
+                })
+                .catch(err => done(err));
+        });
+
+        it('PUT at /class-history/restore/:id should restore a soft-deleted class history document', function (done) {
+            chaiRequests
+                .deleteResource(`${baseURL}/${kHId}`)
+                .then(() => {
+                    return chaiRequests.simplePutResource(`${baseURL}/restore/${kHId}`);
+                })
+                .then(res => {
+                    res.statusCode.should.eql(200);
+                    const resBody = res.body;
+
+                    resBody.should.have.property('class_history');
+                    resBody.class_history.should.not.have.property('deleted');
                     done();
                 })
                 .catch(err => done(err));
