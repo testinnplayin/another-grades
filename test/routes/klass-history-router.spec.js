@@ -227,5 +227,20 @@ describe('KlassHistory router', function() {
                 })
                 .catch(err => done(err));
         });
+
+        it('PUT a specific class history should throw a 400 if the semester in request is not offered', function (done) {
+            const uKH = {
+                semester : 'SUMMER'
+            };
+
+            chaiRequests.putResource(`${baseURL}/${kHId}`, uKH)
+                .then(res => {
+                    res.statusCode.should.eql(400);
+                    done();
+                })
+                .catch(err => done(err));
+        });
     });
+
+    
 });
