@@ -62,7 +62,7 @@ const klassHistorySchema = new Schema(
 // METHODS
 
 /**
- * @function
+ * @function showKlass
  * @param {Object} klass - a class document
  * @returns a KlassHistory document for display by the client
  */
