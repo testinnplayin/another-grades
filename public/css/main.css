@@ -1,0 +1,84 @@
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+main {
+    margin-top: -15px;
+    min-height: 1000px;
+    width: 100%;
+}
+
+.main-header {
+    height: 40px;
+    width: 100%;
+}
+
+.main-nav {
+    background-color: #5900ff;
+    height: 100%;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.main-nav-item {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 15px;
+}
+
+.main-nav-item a {
+    text-align: center;
+    text-decoration: none;
+}
+
+.dropdown-container {
+    float: left;
+    overflow: hidden;
+}
+
+.main-nav-item a,
+.nav-dropdwn-btn {
+    color: #fff;
+    font-weight: bold;
+}
+
+.nav-dropdwn-btn {
+    background-color: inherit;
+    border: 0;
+    cursor: pointer;
+    margin: 0;
+    outline: none;
+}
+
+.nav-drpdwn-content {
+    background-color: #aaa;
+    border: 0.5px solid #333;
+    padding: 15px;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.nav-drpdwn-item {
+    display: block;
+    padding: 5px 0;
+}
+
+.nav-drpdwn-content a {
+    color: #333;
+    text-decoration: none;
+}
+
+.hidden {
+    display: none !important;
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title #{pageTitle}
+        link(rel="stylesheet", href="/css/normalize.css")
+        link(rel="stylesheet", href="/css/main.css")
+        script(src="/js/main.js")
+    body
+        main#test
+            header.main-header
+                nav.main-nav
+                    ul
+                        li.main-nav-item
+                            a(href="/") Home
+                        li.main-nav-item
+                            #nav-class-dropdwn.dropdown-container
+                                button.nav-dropdwn-btn(onclick="clickOnDD('classes')",type="button") Classes
+                                ul#n-c-dd.nav-drpdwn-content.hidden
+                                    li.nav-drpdwn-item
+                                        a(href="/class-templates") Class Templates
+                                    li.nav-drpdwn-item
+                                        a(href="/class-histories") Actual Classes
+            section.title-section
+                h1 #{mainTitle}
+                block content
