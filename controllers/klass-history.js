@@ -286,9 +286,9 @@ module.exports = {
         const reqFields = ['class_id'];
 
         /** 
-         * @namespace {Object} reqStatus - determines the status of the request (whether ok or not)
-         * @member {boolean} isOk - if false the request body is badly-formed
-         * @member {string} msg - if exists, it provides a message to send to the client
+         * @var {Object} reqStatus - determines the status of the request (whether ok or not)
+         * @property {boolean} req.Status.isOk - if false the request body is badly-formed
+         * @property {string} req.Status.msg - if exists, it provides a message to send to the client
          */
         let reqStatus = checkReqFields(reqFields, uKH);
 
@@ -298,9 +298,11 @@ module.exports = {
             throw new Error(reqStatus.msg);
         }
 
+        /** @function validateYear */
         validateYear(req);
 
         if (uKH.hasOwnProperty('semester')) {
+            /** @function resolveReqWSemester */
             resolveReqWSemester(req, res, next);
         } else {
             KlassHistory
@@ -314,7 +316,7 @@ module.exports = {
                         throw new Error(errMsgs.noKH);
                     }
 
-                    /** @see module:models.klassHistory.method.showKlass */
+                    /** @see module:models/klassHistory.method#showKlass */
                     return res.status(200).json({ class_history : updatedKH.showKlass(updatedKH.class_id) });
                 })
                 .catch(next);
