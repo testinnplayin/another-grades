@@ -4,7 +4,7 @@
  * @author R.Wood
  * Date: 30/05/2019
  * @requires module:models/klass
- * @requires module:verification.klass
+ * @requires module:verification/klass
  * @requires module:klassHistoryConstants.errMsgs
  */
 
@@ -18,6 +18,18 @@
 
  /** @exports verification/klassHistory */
  module.exports = {
+     /**
+      * checkForStudentsField - checks if the students field is present in request body in a route that doesn't handle updating that array
+      * @param {Object} req - Express request body
+      * @returns an error if the students field is present in the request body
+      */
+     checkForStudentsField (req) {
+        if (req.body.hasOwnProperty('students')) {
+            /** @throws a 400 if there is a students field because students array is handled elsewhere */
+            req.errStatus = 400;
+            throw new Error(`${errMsgs.badReqMsg}, invalid field present.`);
+        }
+     },
      /**
      * validateSemesterField (determines if the semester in the request body matches a semester that is offered on the klass document)
      * @param {Object} reqBody  - contains the parsed request body
@@ -51,13 +63,11 @@
                 .catch(err => reject(err));
         });
     },
-
     /**
      * validateYear
      * @param {Object} req - request body
      * @returns {boolean} A boolean is returned that is true if the year is valid
      */
-
     validateYear(req) {
         /** @constant {Object} kH - klassHistory document coming in from request */
         const kH = req.body;
@@ -66,7 +76,7 @@
             /**
              * @constant {boolean} yearOk - this is true when the year is a valid year
              * (NOTE: this is not defined at the level of the klassHistory model)
-             * @see module:klassVerifiers.checkYear
+             * @see module:verification/klass.checkYear
              */
             const yearOk = klassVerifiers.checkYear(kH.year);
 

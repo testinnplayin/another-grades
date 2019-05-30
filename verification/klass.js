@@ -23,7 +23,6 @@ function checkSemester(kSemestersOffered, rBodySemester) {
  * @returns a boolean that is true if the year is valid
  */
 function checkYear(rBodyYear) {
-    console.log('rBodyYear ', rBodyYear);
     return (rBodyYear < 1900 || rBodyYear > 2050) ? false : (typeof rBodyYear !== 'number') ? false : true;
 }
 

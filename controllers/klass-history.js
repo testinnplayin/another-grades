@@ -210,11 +210,8 @@ module.exports = {
         /** @var {Object} uKH - what will be update object coming in from the request */
         let uKH = req.body;
 
-        if (uKH.hasOwnProperty('students')) {
-            /** @throws a 400 if there is a students field because students array is handled elsewhere */
-            req.errStatus = 400;
-            throw new Error(`${badReqMsg}, invalid field present.`);
-        }
+        /** @see module:verification/klassHistory.checkForStudentsField */
+        klassHistoryVerifiers.checkForStudentsField(req);
 
         /** @constant {string[]} reqFields - contains required fields that must be in request body */
         const reqFields = ['class_id'];
