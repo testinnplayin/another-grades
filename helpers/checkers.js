@@ -1,8 +1,16 @@
+/**
+ * This module contains generic verification functions used throughout the app
+ * @module checkers
+ * @author R.Wood
+ * Date: 30/05/2019
+ */
+
 'use strict';
 
+/** @exports checkers */
 module.exports = {
     /**
-     * function that checks for required fields in a request body
+     * checkReqFields - function that checks for required fields in a request body
      * @param  {string[]} reqFields - an array of strings; denotes required fields in request body
      * @param  {Object} reqBody - the request body
      * @returns an object that contains a property isOk, which is a Boolean (true if everything is okay) and a property msg if not
